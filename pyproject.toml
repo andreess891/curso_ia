@@ -1,0 +1,31 @@
+[project]
+name = "curso-ia"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "langchain==0.3.*",
+    "langchain-openai",
+    "langchain-google-genai",
+    "streamlit",
+    "dotenv",
+    "langchain-community",
+    "pypdf",
+    "beautifulsoup4",
+    "google-api-python-client",
+    "google-auth-httplib2",
+    "google-auth-oauthlib",
+    "PyPDF2",
+    "chromadb",
+    "langgraph",
+    "langgraph-checkpoint-sqlite",
+    "langchain-chroma",
+    "langchain-experimental",
+    "wikipedia",
+    "langgraph-supervisor",
+    "fastapi",
+    "langchain-tavily",
+    "vt-py",
+    "uvicorn"
+]
