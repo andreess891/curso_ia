@@ -2,6 +2,8 @@ from langgraph.graph import StateGraph, START, END
 from langchain_openai import ChatOpenAI
 from typing import TypedDict, List
 import os
+import subprocess
+import tempfile
 from tkinter import Tk, filedialog
 import openai
 
@@ -13,9 +15,14 @@ load_dotenv(find_dotenv())
 
 http_client = httpx.Client(verify=False)
 
+# Límite real de la API de Whisper (25 MB), con margen de seguridad
+WHISPER_MAX_BYTES = 24 * 1024 * 1024
+CHUNK_SECONDS = 600  # 10 minutos por trozo de audio
+
 
 # Configuración
 llm = ChatOpenAI(model="gpt-4o-mini", temperature=0.3, http_client=http_client)
+whisper_client = openai.OpenAI(http_client=http_client)
 
 # Definición del Estado
 class State(TypedDict): 
@@ -175,25 +182,87 @@ def create_workflow():
 
 # ============= FUNCIONES DE PROCESAMIENTO =============
 
+def extract_audio(file_path: str, output_path: str) -> None:
+    """Extrae y comprime el audio de un vídeo/audio a mp3 mono de baja tasa de bits."""
+    subprocess.run(
+        [
+            "ffmpeg", "-y", "-i", file_path,
+            "-vn", "-ac", "1", "-ar", "16000", "-b:a", "32k",
+            output_path,
+        ],
+        check=True,
+        capture_output=True,
+    )
+
+
+def split_audio(file_path: str, output_dir: str) -> List[str]:
+    """Divide un audio en trozos de CHUNK_SECONDS segundos."""
+    pattern = os.path.join(output_dir, "chunk_%03d.mp3")
+    subprocess.run(
+        [
+            "ffmpeg", "-y", "-i", file_path,
+            "-f", "segment", "-segment_time", str(CHUNK_SECONDS),
+            "-ac", "1", "-ar", "16000", "-b:a", "32k",
+            pattern,
+        ],
+        check=True,
+        capture_output=True,
+    )
+    chunks = sorted(
+        os.path.join(output_dir, f) for f in os.listdir(output_dir) if f.startswith("chunk_")
+    )
+    return chunks
+
+
+def transcribe_file(client: openai.OpenAI, file_path: str) -> str:
+    """Envía un único archivo (ya bajo el límite de tamaño) a Whisper."""
+    with open(file_path, "rb") as audio_file:
+        return client.audio.transcriptions.create(
+            model="whisper-1",
+            file=audio_file,
+            language="es",  # Español
+            prompt="Esta es una reunión de trabajo en español con múltiples participantes.",
+            response_format="text"
+        )
+
+
 def transcribe_media_direct(file_path: str) -> str:
-    """Transcribe usando directamente la API de OpenAI Whisper."""
+    """Transcribe usando directamente la API de OpenAI Whisper.
+
+    Whisper solo acepta archivos de hasta 25 MB, así que primero se extrae y
+    comprime el audio; si aún así supera el límite, se divide en trozos.
+    """
     try:
         print("🎙️ Transcribiendo con OpenAI Whisper API directa...")
-        
-        client = openai.OpenAI()  # Usa OPENAI_API_KEY del entorno
-        
-        with open(file_path, "rb") as audio_file:
-            transcript = client.audio.transcriptions.create(
-                model="whisper-1",
-                file=audio_file,
-                language="es",  # Español
-                prompt="Esta es una reunión de trabajo en español con múltiples participantes.",
-                response_format="text"
-            )
-        
+
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            audio_path = os.path.join(tmp_dir, "audio.mp3")
+            print("🔧 Extrayendo y comprimiendo audio con ffmpeg...")
+            extract_audio(file_path, audio_path)
+
+            audio_size = os.path.getsize(audio_path)
+
+            if audio_size <= WHISPER_MAX_BYTES:
+                transcript = transcribe_file(whisper_client, audio_path)
+            else:
+                print(f"⚠️ Audio comprimido ({audio_size / 1024 / 1024:.1f} MB) sigue superando 25 MB, dividiendo en trozos...")
+                chunks_dir = os.path.join(tmp_dir, "chunks")
+                os.makedirs(chunks_dir, exist_ok=True)
+                chunk_paths = split_audio(audio_path, chunks_dir)
+
+                transcripts = []
+                for i, chunk_path in enumerate(chunk_paths, start=1):
+                    print(f"   • Transcribiendo trozo {i}/{len(chunk_paths)}...")
+                    transcripts.append(transcribe_file(whisper_client, chunk_path))
+                transcript = " ".join(transcripts)
+
         print(f"✓ Transcripción completada: {len(transcript)} caracteres")
         return transcript
-        
+
+    except subprocess.CalledProcessError as e:
+        error_output = e.stderr.decode(errors="ignore") if e.stderr else str(e)
+        print(f"❌ Error al procesar el audio con ffmpeg: {error_output}")
+        return f"Error: {error_output}"
     except Exception as e:
         print(f"❌ Error en transcripción: {e}")
         return f"Error: {str(e)}"
