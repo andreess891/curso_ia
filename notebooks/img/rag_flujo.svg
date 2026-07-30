@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="680" height="350" viewBox="0 0 680 350" role="img" font-family="Segoe UI, Helvetica, Arial, sans-serif">
+<title>Vectorizacion y recuperacion en un espacio vectorial</title>
+<desc>Los documentos se fragmentan y se convierten en vectores. La pregunta se convierte en otro vector y el retriever devuelve los puntos mas cercanos.</desc>
+<defs>
+<marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="#73726C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker>
+</defs>
+
+<rect x="0" y="0" width="680" height="350" rx="12" fill="#FFFFFF"/>
+
+<g fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.5">
+<rect x="48" y="50" width="50" height="66" rx="5"/>
+<rect x="58" y="58" width="50" height="66" rx="5"/>
+<rect x="68" y="66" width="50" height="66" rx="5"/>
+</g>
+<g stroke="#1D9E75" stroke-width="1.5" stroke-linecap="round" opacity="0.55">
+<line x1="78" y1="82" x2="108" y2="82"/><line x1="78" y1="94" x2="108" y2="94"/><line x1="78" y1="106" x2="98" y2="106"/>
+</g>
+<text x="83" y="152" text-anchor="middle" font-size="14" font-weight="500" fill="#3D3D3A">Documentos</text>
+<text x="83" y="169" text-anchor="middle" font-size="12" fill="#73726C">PDF, texto</text>
+
+<line x1="128" y1="92" x2="152" y2="92" stroke="#73726C" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+<g fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.5">
+<rect x="162" y="56" width="36" height="32" rx="5"/>
+<rect x="204" y="56" width="36" height="32" rx="5"/>
+<rect x="162" y="94" width="36" height="32" rx="5"/>
+<rect x="204" y="94" width="36" height="32" rx="5"/>
+</g>
+<text x="201" y="152" text-anchor="middle" font-size="14" font-weight="500" fill="#3D3D3A">Fragmentos</text>
+<text x="201" y="169" text-anchor="middle" font-size="12" fill="#73726C">chunks</text>
+
+<line x1="250" y1="92" x2="274" y2="92" stroke="#73726C" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+<g fill="#1D9E75">
+<rect x="286" y="58" width="14" height="14" rx="3" opacity="0.9"/><rect x="305" y="58" width="14" height="14" rx="3" opacity="0.3"/><rect x="324" y="58" width="14" height="14" rx="3" opacity="0.65"/><rect x="343" y="58" width="14" height="14" rx="3" opacity="0.45"/>
+<rect x="286" y="77" width="14" height="14" rx="3" opacity="0.35"/><rect x="305" y="77" width="14" height="14" rx="3" opacity="0.75"/><rect x="324" y="77" width="14" height="14" rx="3" opacity="0.25"/><rect x="343" y="77" width="14" height="14" rx="3" opacity="0.85"/>
+<rect x="286" y="96" width="14" height="14" rx="3" opacity="0.6"/><rect x="305" y="96" width="14" height="14" rx="3" opacity="0.4"/><rect x="324" y="96" width="14" height="14" rx="3" opacity="0.9"/><rect x="343" y="96" width="14" height="14" rx="3" opacity="0.3"/>
+<rect x="286" y="115" width="14" height="14" rx="3" opacity="0.5"/><rect x="305" y="115" width="14" height="14" rx="3" opacity="0.85"/><rect x="324" y="115" width="14" height="14" rx="3" opacity="0.35"/><rect x="343" y="115" width="14" height="14" rx="3" opacity="0.7"/>
+</g>
+<text x="321" y="152" text-anchor="middle" font-size="14" font-weight="500" fill="#3D3D3A">Embeddings</text>
+<text x="321" y="169" text-anchor="middle" font-size="12" fill="#73726C">vectores</text>
+
+<line x1="368" y1="92" x2="394" y2="92" stroke="#73726C" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+<rect x="400" y="56" width="240" height="240" rx="16" fill="#FAFAF7" stroke="#D3D1C7" stroke-width="0.5"/>
+<text x="520" y="82" text-anchor="middle" font-size="14" font-weight="500" fill="#3D3D3A">Espacio vectorial</text>
+<text x="520" y="100" text-anchor="middle" font-size="12" fill="#73726C">busqueda por similitud</text>
+
+<g fill="#888780" opacity="0.55">
+<circle cx="435" cy="140" r="4.5"/><circle cx="470" cy="128" r="4.5"/><circle cx="497" cy="131" r="4.5"/><circle cx="560" cy="130" r="4.5"/><circle cx="605" cy="155" r="4.5"/><circle cx="425" cy="215" r="4.5"/><circle cx="440" cy="270" r="4.5"/><circle cx="500" cy="282" r="4.5"/><circle cx="575" cy="265" r="4.5"/><circle cx="612" cy="225" r="4.5"/><circle cx="590" cy="195" r="4.5"/>
+</g>
+
+<circle cx="520" cy="200" r="50" fill="none" stroke="#BA7517" stroke-width="1" stroke-dasharray="4 5" opacity="0.7"/>
+
+<circle cx="494" cy="180" r="6" fill="#1D9E75"/><circle cx="548" cy="188" r="6" fill="#1D9E75"/><circle cx="518" cy="246" r="6" fill="#1D9E75"/>
+<circle cx="520" cy="200" r="7" fill="#BA7517"/>
+
+<circle cx="424" cy="315" r="5" fill="#BA7517"/>
+<text x="436" y="319" font-size="12" fill="#73726C">consulta</text>
+<circle cx="505" cy="315" r="5" fill="#1D9E75"/>
+<text x="517" y="319" font-size="12" fill="#73726C">top-k recuperado</text>
+
+<rect x="48" y="232" width="72" height="50" rx="10" fill="#EEEDFE" stroke="#534AB7" stroke-width="0.5"/>
+<path d="M62 282 L62 296 L78 282 Z" fill="#7F77DD" opacity="0.8"/>
+<g stroke="#534AB7" stroke-width="1.5" stroke-linecap="round" opacity="0.55">
+<line x1="60" y1="250" x2="108" y2="250"/><line x1="60" y1="262" x2="92" y2="262"/>
+</g>
+<text x="84" y="316" text-anchor="middle" font-size="14" font-weight="500" fill="#3D3D3A">Pregunta</text>
+<text x="84" y="333" text-anchor="middle" font-size="12" fill="#73726C">del usuario</text>
+
+<line x1="132" y1="258" x2="156" y2="258" stroke="#73726C" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+<g fill="#7F77DD">
+<rect x="166" y="232" width="14" height="14" rx="3" opacity="0.75"/><rect x="185" y="232" width="14" height="14" rx="3" opacity="0.35"/><rect x="204" y="232" width="14" height="14" rx="3" opacity="0.85"/><rect x="223" y="232" width="14" height="14" rx="3" opacity="0.45"/>
+<rect x="166" y="251" width="14" height="14" rx="3" opacity="0.3"/><rect x="185" y="251" width="14" height="14" rx="3" opacity="0.9"/><rect x="204" y="251" width="14" height="14" rx="3" opacity="0.5"/><rect x="223" y="251" width="14" height="14" rx="3" opacity="0.7"/>
+<rect x="166" y="270" width="14" height="14" rx="3" opacity="0.6"/><rect x="185" y="270" width="14" height="14" rx="3" opacity="0.4"/><rect x="204" y="270" width="14" height="14" rx="3" opacity="0.8"/><rect x="223" y="270" width="14" height="14" rx="3" opacity="0.35"/>
+</g>
+<text x="201" y="316" text-anchor="middle" font-size="14" font-weight="500" fill="#3D3D3A">Embedding</text>
+<text x="201" y="333" text-anchor="middle" font-size="12" fill="#73726C">mismo modelo</text>
+
+<line x1="248" y1="258" x2="394" y2="258" stroke="#73726C" stroke-width="1.5" marker-end="url(#arrow)"/>
+</svg>
